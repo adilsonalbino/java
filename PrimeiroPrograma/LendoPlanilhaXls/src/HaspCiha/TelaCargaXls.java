@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jxl.Cell;
 import jxl.Sheet;
@@ -213,6 +214,8 @@ public class TelaCargaXls extends javax.swing.JFrame {
             String dt_ate = ch.getContents();
             String cd_sus = ci.getContents();
             
+          
+            
             DefaultTableModel mp = (DefaultTableModel) tbl.getModel();
             mp.addRow(new String[] {cd_pront, nome, sexo, dt_nasc, endereco, cep, complem, dt_ate, cd_sus});
                      
@@ -223,6 +226,9 @@ public class TelaCargaXls extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Erro, não foi possível executar.", "ERRO", JOptionPane.WARNING_MESSAGE);
+        
+       
         
     }//GEN-LAST:event_jButton1ActionPerformed
         //// fim do código
