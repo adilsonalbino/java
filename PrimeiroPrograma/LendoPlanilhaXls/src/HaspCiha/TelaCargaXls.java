@@ -1,21 +1,32 @@
+package HaspCiha;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package HaspCiha;
+
 
 import java.awt.Dimension;
+import java.util.List;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
 
 /**
  *
@@ -24,12 +35,16 @@ import jxl.read.biff.BiffException;
 public class TelaCargaXls extends javax.swing.JFrame {
     File file;
     Workbook workbook;
+    String cd_pront, nome, sexo, dt_nasc, endereco, cep, complem, dt_ate, cd_sus;
+    String [] colunas = {"cd_pront", "nome", "sexo", "dt_nasc", "endereco", "cep", "complem", "dt_ate", "cd_sus"};    
+    String id, nome_planilha, email, telefone;
     /**
      * Creates new form TelaCargaXls
      */
     public TelaCargaXls() {
         initComponents();
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,6 +98,11 @@ public class TelaCargaXls extends javax.swing.JFrame {
         });
 
         jButton2.setText("Exportar arquivo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("SOFTWARE REMOVER DE CARACTERES CIHA HASP");
 
@@ -174,26 +194,23 @@ public class TelaCargaXls extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnxlsActionPerformed
 
+    int linhas = 0;
     private void btnpreencherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpreencherActionPerformed
         try {
             //// Início do código btnpreencher
+
             workbook = Workbook.getWorkbook(new File(lblcaminho.getText().trim()));
-            //// Fim do código btnpreencher
         } catch (IOException | BiffException ex) {
             Logger.getLogger(TelaCargaXls.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }            //// Fim do código btnpreencher
         
         Sheet sheet = workbook.getSheet(0);
         
-        //Nome da planilha dentro da celula
-       // Cell c0 = sheet.getCell(0, 0);
-       // String titulo = c0.getContents();
-        
-       // lblnomeplanilha.setText(titulo);
-        int linhas = sheet.getRows();
+        linhas = sheet.getRows();
+       
         
         ////inicio do for
-        for (int i = 2; i < linhas; i++){
+        for (int i = 1; i < linhas; i++){
             Cell ca = sheet.getCell(0, i);
             Cell cb = sheet.getCell(1, i);
             Cell cc = sheet.getCell(2, i);
@@ -204,37 +221,46 @@ public class TelaCargaXls extends javax.swing.JFrame {
             Cell ch = sheet.getCell(7, i);
             Cell ci = sheet.getCell(8, i); 
             
-            String cd_pront = ca.getContents();
-            String nome = cb.getContents();
-            String sexo = cc.getContents();
-            String dt_nasc = cd.getContents();
-            String endereco = ce.getContents();
-            String cep = cf.getContents();
-            String complem = cg.getContents();
-            String dt_ate = ch.getContents();
-            String cd_sus = ci.getContents();
             
-          
-            
+             cd_pront = ca.getContents();
+             nome = cb.getContents();
+             sexo = cc.getContents();
+             dt_nasc = cd.getContents();
+             endereco = ce.getContents();
+             cep = cf.getContents();
+             complem = cg.getContents();
+             dt_ate = ch.getContents();
+             cd_sus = ci.getContents();
+
+   
             DefaultTableModel mp = (DefaultTableModel) tbl.getModel();
             mp.addRow(new String[] {cd_pront, nome, sexo, dt_nasc, endereco, cep, complem, dt_ate, cd_sus});
-                     
+                                
         } //// fim do for
+        
             workbook.close();
-            
     }//GEN-LAST:event_btnpreencherActionPerformed
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Erro, não foi possível executar.", "ERRO", JOptionPane.WARNING_MESSAGE);
+        //JOptionPane.showMessageDialog(null, "Erro, não foi possível executar.", "ERRO", JOptionPane.WARNING_MESSAGE);
         
        
         
     }//GEN-LAST:event_jButton1ActionPerformed
-        //// fim do código
-    /**
-     * @param args the command line arguments
-     */
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CriarArquivo criarArquivo = new CriarArquivo();      
+        //DadosPlanilha criar = new DadosPlanilha(id, nome_planilha, email, telefone);
+        //DadosPlanilha geradados = new DadosPlanilha();
+        List<DadosPlanilha> dados = criarArquivo.pegarDadosplanilha();
+        criarArquivo.CriarArquivoXls("ListaTeste", dados);
+        
+        //criar.criarArquivo();
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     public static void main(String args[]) {
         
         /* Create and display the form */
